@@ -97,7 +97,7 @@ shinyServer(function(input, output,session) {
     
     accuracy = ifelse(treedata()$response==predict, 1, 0)
     accuracy.pct = sum(accuracy)/length(accuracy)
-    paste("Accuracy of your classification:", round(accuracy.pct,digits=2))
+    paste("Accuracy of your classification:", round(accuracy.pct*100,digits=4), "%")
   })
   
   
@@ -149,5 +149,12 @@ shinyServer(function(input, output,session) {
     tree.out= tree(response~., data=treedata())
     plot(tree.out)
     text(tree.out, pretty=0)
+  })
+  output$text <- renderUI({
+    author <- HTML("<b>","Author:","</b>")
+    name <- HTML(paste("Dennis Liu","Kaiqian Zhang"))
+    SourceCode <- HTML("<b>","Source Code:","</b>")
+    Link <- HTML("https://github.com/dennisliu19/RandomForest-Summer")
+    HTML(paste(c(author,name,SourceCode,Link,sep="\n")))
   })
 })

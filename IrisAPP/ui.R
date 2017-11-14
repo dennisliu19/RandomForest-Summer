@@ -1,11 +1,4 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
+
 
 library(shiny)
 library(shinydashboard)
@@ -30,7 +23,7 @@ dashboardPage(
                                sliderInput("ysliderright","Y slider",min=0,max=5,value=2),
                                checkboxInput("display","Display Optimized Tree?",value=FALSE)),tabName="yourself"),
       convertMenuItem(menuItem("Optimized Tree",tabName = "optimized",icon=icon("bar-chart-o")),tabName = "optimized")
-    )
+    ),
   ),
   dashboardBody(
     tabItems(

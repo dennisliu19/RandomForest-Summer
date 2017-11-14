@@ -2,23 +2,31 @@
 title: "Introduction to Random Forest"
 author: "Kaiqian Zhang & Dennis Liu"
 date: "7/15/2017"
-output: word_document
+output:
+  html_document: default
+  word_document: default
 ---
 
-Packages Installed: randomForest, caret, and pROC
 
-Random forests are an ensemble learning method for classification (and regression) that operate by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes output by individual trees (Wikipedia)
+Random forests are an ensemble learning method for classification (and regression) that operate by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes output by individual trees. 
 
-```{r}
+To Finish this lab, we need three packages: randomForest, caret and pROC
+
+
+```{r, echo=FALSE, message=FALSE}
 # randomForest is a package for creating random forests
+#if (!("randomForest" %in% installed.packages())){install.packages("randomForest")}
 library(randomForest)
 # caret is a package we use for data splitting
+#if (!("caret" %in% installed.packages())){install.packages("caret")}
 library(caret)
 # pROC is a package for plotting ROC curve
+# if (!("pROC" %in% installed.packages())){install.packages("pROC")}
 library(pROC)
 ```
 
 ### General Algorithm
+
 We can first build a random forest simply by using a R package 'randomForest'. The data we use here is 'iris' data. And we start with a simple random forest with only three trees.
 
 ```{r}
@@ -42,7 +50,7 @@ irisTest  <- iris[-trainIndex,]
 forest1 <- randomForest(Species ~ ., data = irisTrain, importance=TRUE, ntree=3, mtry = 2, do.trace=TRUE)
 forest1
 ```
-Notice that OOB error estimate is called out-of-bag error rate. This is used to measure the prediction error of random forests. OOB is the mean prediction error on each training sample xᵢ, using only the trees that did not have xᵢ in their bootstrap sample. Further, confusion matrix is produced based on OOB. It is calculated at a specific point determined by the cutoff on the votes.
+Notice that OOB error estimate is called out-of-bag error rate. This is used to measure the prediction error of random forests. OOB is the mean prediction error on each training sample x???, using only the trees that did not have x??? in their bootstrap sample. Further, confusion matrix is produced based on OOB. It is calculated at a specific point determined by the cutoff on the votes.
 
 The algorithm for producing the random forest model 'forest1' is:
 
@@ -56,20 +64,22 @@ The algorithm for producing the random forest model 'forest1' is:
 Even though random forest is like a blackbox, we are still able to visualize individual tress by using a R package 'reprtree'.
 
 Please first instll the package by using the following code:
-
 ```{r eval = TRUE, warning=FALSE}
 # Install reprtree package
 options(repos='http://cran.rstudio.org')
 have.packages <- installed.packages()
 cran.packages <- c('devtools','plotrix','randomForest','tree')
 to.install <- setdiff(cran.packages, have.packages[,1])
-if(length(to.install)>0) install.packages(to.install)
+if(length(to.install)>0){ 
+install.packages(to.install)
+}
 library(devtools)
 if(!('reprtree' %in% installed.packages())){
   install_github('araastat/reprtree')
 }
 for(p in c(cran.packages, 'reprtree')) eval(substitute(library(pkg), list(pkg=p)))
 ```
+
 
 Now we can visualize exactly what three sampled trees are. 
 ```{r}
@@ -113,7 +123,7 @@ Caret is also powerful in developing random forests. In this section, we will us
 
 ```{r}
 # Clear our data
-rm(iris)
+# rm(iris)
 # Remove setosa data from iris
 iris <- iris[iris$Species == "virginica" | iris$Species == "versicolor", ]
 iris$Species <- factor(iris$Species) 
